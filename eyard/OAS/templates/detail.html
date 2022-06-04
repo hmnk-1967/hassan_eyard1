@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>eYard || MAKE || BIDS</title>
+<style>
+body {
+  color: white;                                             /* set txt color */
+  background: #435165;                                      /* set page bg color */
+  margin: 0;                                                /* set left margin of navbar*/
+  font-family: Arial, Helvetica, sans-serif;                /* set font style */
+}
+.topnav {
+  width: 100%;                                              /* set width of navbar */
+  position: fixed;                                          /* set position of navbar */
+  top: 0;                                                   /* set top margin of navbar */
+  overflow: hidden;                                         /* set content on navbar*/
+  background: #315B7E;                                      /* set color of navbar */
+}
+.topnav a {
+  float: right;                                             /* set btn alignment on navbar*/
+  color: #f2f2f2;                                           /* set btn text color on navbar */
+  padding: 14px 16px;                                       /* set top/right space b/w btn on navbar*/
+  text-decoration: none;                                    /* set btn text without underline on navbar */
+  font-size: 17px;                                          /* set btn text size on navbar*/
+}
+.topnav a:hover {
+  background: #7DA7CA;                                      /* set hover color on navbar btn*/
+  color: yellow;                                            /* set text color for hover on navbar btn*/
+}
+.topnav a.active {
+  float: left;                                              /* set alignment */
+  background: black;                                        /* set text color for hover */
+  color: #F0E68C;                                           /* set text color */
+}
+.card {
+  color: white;                                 		    /* set text color */
+  font-size: 18px;                                          /* set text size */
+  max-width: 600px;                                         /* set width of card */
+  max-height:800px;                                         /* set height of card */
+  margin: auto;                                             /* set card alignment */
+  text-align: center;                                       /* set text alignment on card */
+  padding: 12px 10px;                                       /* set top/right space on card */
+}
+
+input[type=text], select {
+  width: 90%;                                               /* set width of input field */
+  padding: 12px 20px;                                       /* set top/right space */
+  margin: 8px;                                             /* set top margin from input field */
+}
+input[type=submit] {
+  width: 20%;                                               /* set width of input field */
+  background: #315B7E;                                      /* set bg color of btn */
+  color: white;                                             /* set text color */
+  padding: 14px 20px;                                       /* set top/right space */
+  margin: 8px 0;                                             /* set top margin */
+  border-radius: 10px;                                      /* set round border */
+  cursor: pointer;                                          /* set cursor as pointer */
+}
+input[type=submit]:hover {
+  background: #7DA7CA;                                      /* set hover bg color */
+  color: yellow;                                            /* set hover txt color */
+}
+#text {
+  color: red;                                              /* set text color */
+  font-size: 18px;                                           /* set text size */
+}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+       <b> <a class="active" href="#Auction System">eYARD SALE SYSTEM</a></b>
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">LOGOUT</a>
+        <a href="{% url 'home' %}" style="float: left">Home</a>
+		<a href="{% url 'my_bids' %}"style="float: left">myBids</a>
+		<a  href="{% url 'store' %}" style="float: left">eYard Sale </a>
+	      
+	     
+
+        {% else %}
+        <a href="{% url 'login' %}">LOGIN</a>
+        <a href="{% url 'register' %}">REGISTER</a>
+        {% endif %}
+    </div>
+<h2>=</h2>
+<h2 style="text-align:center">Place Bid</h2>
+<div class="card">
+      <span><img  style="height: 30%; width: 100%" src="{{ auction.image.url }}"/></span>
+	<hr>
+	<!-- card text -->
+    <div> 
+      {% if auction.is_active %} {% if auction.remaining_minutes < 2 %} 
+        Less than {{ auction.remaining_minutes }} m 
+		{% else %}
+        Less than {{ auction.remaining_minutes }} m 
+		<hr>
+        {% endif %} 
+		
+		{% else %}
+        <div id="text" >Auction Expired</div><br>
+        {% endif %}
+        <div>{{ auction.min_value }} $</div>
+		<hr><hr>
+      </div>
+	  {% if not own_auction %} {% if auction.is_active %}
+	
+	
+	<div>
+	<!-- card form -->
+    <form action="{% url 'bid' auction.id %}" method="post">
+      {% csrf_token %}
+      <div>
+        {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+        {% endif %} 
+		{% if already_bid %}
+        <h3>Current Bid: {{ bid_amount }}</h3>
+		<hr><hr>
+        {% endif %}
+        <span>Enter amount ($):</span>
+        <span>*</span>
+      </div>
+      <input type="text" name="amount" />
+      <br/>	  
+      <div> <input type="submit" value=" Place Bid" /> </div>
+    </form>
+		
+  </div>
+  <br/>
+	  {% endif %} {% endif %}
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

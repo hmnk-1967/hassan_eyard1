@@ -1,0 +1,3 @@
+1. Improve layout of the whole website
+2. Increase the number of pictures that could be added to advertise the product on sale
+3. Add the feature of Live sale and live session (like Facebook Marketplace), which would include live group chat feature, live video streaming.

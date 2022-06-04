@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>eYard || HOME</title>
+</head>
+<style>
+
+#heading{
+color: white;
+text-align:center
+}
+.btn {
+  border-radius: 6px;                                       /* set Rounded border */
+  color: white;                                             /* set btn text color */
+  padding: 8px 16px;                                        /* set top right margin */
+  font-size: 12px;                                          /* set text size */
+  cursor: pointer;                                          /* set cursor as pointer */
+  background: #315B7E;                                      /* set btn color */
+  text-decoration: none;                                    /* set btn text without underline */
+}
+.btn:hover {
+  background: #7DA7CA;                                      /* set hover color */
+  color: yellow;                                            /* set text color for hover */
+}
+.txt{
+color:red;
+text-align:center;
+}
+</style>
+<body>
+ <h1 id="heading"> AUCTION PRODUCTS </h1>
+	<div class="row">
+		 {% for p in products %}
+		<div class="col-lg-4">
+            {% if p.image %}
+			<img class="thumbnail" src="{{ p.image.url }}">
+			<div class="box-element product">
+				<h6><strong>{{ p.title }}</strong></h6>
+				<hr>
+{% if p.is_active %}
+                                        {% if p.remaining_minutes < 2 %}
+                                    <h6> Less than {{ p.remaining_minutes }} m</h6>
+                                         {% else %}
+                                    <h6> Less than {{ p.remaining_minutes }} m</h6>
+                                                      {% endif %}
+                                                       {% else %}
+                                    <h6 class="txt">Expired</h6>
+                                           {% endif %}
+                <hr>
+ {% if user.is_authenticated %}
+                <a href="{% url 'detail' p.id %}"><button class= "btn"/>Place Bid</button></a>
+ {% else %}
+<a href="{% url 'login' %}"><button class= "btn"/>Place Bid</button></a>
+{% endif %}
+				<h4 style="display: inline-block; float: right"><strong>{{ p.min_value }} $</strong></h4>
+
+			</div>
+        </div>
+   {% endif %} {% endfor %}
+	</div>
+{% endblock content %}
+</body>
+</html>

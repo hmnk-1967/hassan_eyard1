@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>eYard Sale </title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+	
+	</script>
+
+</head>
+<style>
+
+body {
+  background-color: #435165;
+  color: black;
+  margin: 0;                                                /* set margin */
+  font-family: Arial, Helvetica, sans-serif;                /* set font style */
+}
+.topnav {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  overflow: hidden;                                         /* set content */
+  background: #315B7E;                                      /* set color of navbar */
+}
+.topnav a {
+  float: right;                                             /* set btn alignment */
+  color: #f2f2f2;                                           /* set btn text color */
+  padding: 14px 16px;                                       /* set top/right space */
+  text-decoration: none;                                    /* set btn text without underline */
+  font-size: 17px;                                          /* set btn text size */
+}
+.topnav a:hover {
+  background: #7DA7CA;                                      /* set hover color */
+  color: yellow;                                            /* set text color for hover */
+}
+.topnav a.active {
+  float: left;                                              /* set alignment */
+  background: black;                                        /* set text color for hover */
+  color: #F0E68C;                                           /* set text color */
+}
+
+h1,h4,h5,h6{
+	color:hsl(0, 0%, 30%);
+}
+
+.box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.thumbnail{
+	width: 100%;
+	height: 200px;
+	-webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+    -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+    box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+}
+
+.product{
+	border-radius: 0 0 4px 4px;
+}
+
+.bg-dark{
+	background-color: #4f868c!important;
+}
+
+#cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	background-color: red;
+	width: 20px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 14px;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+
+.btn{
+	border-radius: 0;
+}
+
+.row-image{
+	width: 100px;
+}
+
+
+.cart-row{
+	display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+
+}
+
+.btn {
+  border-radius: 6px;                                       /* set Rounded border */
+  color: white;                                             /* set btn text color */
+  padding: 8px 16px;                                        /* set top right margin */
+  font-size: 12px;                                          /* set text size */
+  cursor: pointer;                                          /* set cursor as pointer */
+  background: #315B7E;                                      /* set btn color */
+  text-decoration: none;                                    /* set btn text without underline */
+}
+.btn:hover {
+  background: #7DA7CA;                                      /* set hover color */
+  color: yellow;                                            /* set text color for hover */
+}
+
+</style>
+<body>
+
+	<div class="topnav">
+       <b> <a class="active" href="#eYard System">eYARD SALE SYSTEM</a></b>
+        {% if user.is_authenticated %}
+
+        <a class="nav-link" href="{% url 'store' %}" style="float: left">eYard Sale</a>
+        <a class="nav-link" href="{% url 'cart' %}" style="float: left">CART </a>
+	    <a href="{% url 'logout' %}">LOGOUT</a>
+	    <a class="nav-link" href="{% url 'home' %}">GO TO AUCTIONS</a>
+
+
+
+
+
+        {% else %}
+
+        <a href="#home" style="float: left">Home</a>
+        <a href="#cart"style="float: left">Auctions</a>
+
+
+        <a href="{% url 'login' %}">LOGIN</a>
+        <a href="{% url 'register' %}">REGISTER</a>
+        {% endif %}
+    </div>
+
+
+
+
+     <div class="container">
+            <br><br><br>
+            {% block content %}
+
+
+            {% endblock content %}
+         </div>
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>

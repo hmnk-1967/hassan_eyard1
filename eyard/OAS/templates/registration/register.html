@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eYard || USER REGISTER</title>
+</head>
+<style>
+body {
+  background-color: #435165;
+  margin: 0;
+  color: white;
+  font-family: Arial;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #315B7E;
+
+}
+.topnav a {
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #7DA7CA;
+  color: yellow;
+}
+.topnav a.active {
+  float: left;
+  background-color: black;
+  color: #F0E68C
+}
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 20%;
+  background-color: #315B7E;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  float:right;
+
+}
+
+input[type=submit]:hover {
+  background-color: #7DA7CA;
+}
+.center {
+  margin-left:29%;
+  margin-top: 13%;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box auto;
+  width: 40%;
+  padding: 14px 20px;
+
+}
+.p{
+  margin-left: -0.4rem;
+  margin-right: -0.4rem;
+  margin-top: -1rem;
+  padding: 18px;
+  text-align:center;
+  background-color: #315B7E;
+  }
+</style>
+
+<body>
+<div class="topnav">
+    <b> <a class="active" href="#Auction System">eYARD SALE SYSTEM</a></b>
+        <a href="{% url 'login' %}">LOGIN</a>
+        <a href="{% url 'register' %}">REGISTER</a>
+</div>
+	<div>
+    <form class= "center" method="post" action="">
+	<div class="p">eYARD SALE MANAGEMENT SYSTEM</div><br>
+        {% csrf_token %}
+        {% for form in form %}
+        {{form.label_tag}} <br> {{form}} {{form.error|striptags}}<br>
+        {% endfor %}
+        <input type="submit" value="Register"/>
+    </form>
+         {% if messages %}
+        {% for message in messages %}
+        <p style="color:red" align = "center">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+	</div>
+	
+</body>
+</html>
